@@ -50,10 +50,19 @@ class Command(BaseCommand):
         ]
 
         admin = backend.schema_admin
+        # dict of fields, where field names are keys
+        existing_fields = admin.get_fields()
         for field in fields + django_fields:
-            resp = admin.add_field(field)
-            self.log(field, resp, backend)
-
+        
+            prior_field = existing_fields.get(field['name'])
+            
+            if prior_field and any([str(prior_field.get(key)).lower() != str(field.get(key)).lower() for key in field]):
+                resp = admin.modify_fields(field, action = 'replace')
+                self.log(field, resp, backend)
+            else:
+                resp = admin.modify_fields(field, action = 'add')
+                self.log(field, resp, backend)
+            
     def build_context(self, using):
         backend = connections[using].get_backend()
 
