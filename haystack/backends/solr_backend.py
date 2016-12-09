@@ -54,6 +54,7 @@ class SolrSearchBackend(BaseSearchBackend):
             raise ImproperlyConfigured("You must specify a 'URL' in your settings for connection '%s'." % connection_alias)
 
         self.conn = Solr(connection_options['URL'], timeout=self.timeout, **connection_options.get('KWARGS', {}))
+        self.conn.get_session()
         self.log = logging.getLogger('haystack')
 
     @cached_property
