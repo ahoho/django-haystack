@@ -102,7 +102,7 @@ class SearchField(object):
 
             if len(values) == 1:
                 return values[0]
-            else:
+            elif len(values) > 1:
                 return values
 
         if self.has_default():
@@ -236,7 +236,7 @@ class LocationField(SearchField):
             return None
 
         pnt = ensure_point(value)
-        pnt_lng, pnt_lat = pnt.get_coords()
+        pnt_lng, pnt_lat = pnt.coords
         return "%s,%s" % (pnt_lat, pnt_lng)
 
     def convert(self, value):
