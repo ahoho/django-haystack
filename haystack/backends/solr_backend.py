@@ -520,8 +520,7 @@ class SolrSearchBackend(BaseSearchBackend):
             if field_class.solr_field_params:
                 overlap = field_class.solr_field_params.viewkeys() & field_data.viewkeys()
                 if overlap:
-                    import warnings
-                    warnings.warn("""Overwriting Haystack-defined field parameters with user definitions.
+                    self.log.warning("""Overwriting Haystack-defined field parameters with user definitions.
                                      Changed parameters for %s: %s""" % (field_class.index_fieldname, overlap))
                 field_data.update(field_class.solr_field_params)
                 
